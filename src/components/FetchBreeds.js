@@ -8,35 +8,40 @@ import DisplayBreeds from './DisplayBreeds';
 const BREED_LIST_URL = 'https://dog.ceo/api/breeds/list/all';
 
 function FetchBreeds() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+
   const [breeds, setBreeds] = useState([]);
+  const [load, setLoad] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchBreeds = async () => {
       try {
+        setLoad(true);
+        setError(false);
         const response = await axios.get(BREED_LIST_URL);
-        console.log(response);
-        // breed array should be in the following format:
-        // [
-        //   {
-        //     breed: 'affenpinscher',
-        //     subbreed: null,
-        //   },
-        //   {
-        //     breed: 'hound',
-        //     subbreed: 'afghan',
-        //   },
-        //   ...
-        // ]
+        if(response.data.status === 'success') {
+          setLoad(false);
+          let breeds = [];
+          //I know there's a better way to do this parsing with various libraries, this is functional but perhaps not optimal:
+          for(let b in response.data.message){
+            let subbreeds = (response.data.message[b].length) ? response.data.message[b] : [null];
+            for (let s in subbreeds) {
+              breeds.push({breed: b,
+                subbreed: subbreeds[s]
+              })
+            }
+          }
+          setBreeds(breeds);
+        }
       } catch (e) {
-        // error
+        setLoad(false);
+        setError(true);
       }
     };
     fetchBreeds();
   }, []);
 
-  if (loading) {
+  if (load) {
     return (
       <Container maxWidth="sm" style={{ marginTop: 32 }}>
         <Alert severity="info">Loading...</Alert>
@@ -57,4 +62,4 @@ function FetchBreeds() {
   );
 }
 
-export default FetchBreeds
+export default FetchBreeds;

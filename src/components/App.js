@@ -15,6 +15,8 @@ function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = useMemo(() => createMuiTheme({
     palette: {
+      primary: { main: '#4a90e2' },
+      secondary: { main: '#e2844a' },
       type: prefersDarkMode ? 'dark' : 'light',
     },
   }), [prefersDarkMode]);

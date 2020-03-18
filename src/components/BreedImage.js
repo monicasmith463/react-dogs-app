@@ -6,7 +6,7 @@ function BreedImage({
   loading,
   error,
   breed,
-  image,
+  image
 }) {
   if (loading) return <Alert severity="info">Loading image...</Alert>;
   if (error) return <Alert severity="error">There was a problem loading the image</Alert>;
@@ -16,7 +16,7 @@ function BreedImage({
 BreedImage.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  breed: PropTypes.string.isRequired,
+  breed: PropTypes.object.isRequired,
   image: PropTypes.string.isRequired,
 };
 
